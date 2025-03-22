@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ideageek.Subscribly.Core", "Source\Ideageek.Subscribly.Core\Ideageek.Subscribly.Core.csproj", "{280D34BA-5486-4DB6-9EAD-34D374C181D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ideageek.Subscribly.Core", "Source\Ideageek.Subscribly.Core\Ideageek.Subscribly.Core.csproj", "{280D34BA-5486-4DB6-9EAD-34D374C181D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ideageek.Subscribly.Services", "Source\Ideageek.Subscribly.Services\Ideageek.Subscribly.Services.csproj", "{88BDFC44-3F54-4D94-ACED-029F929E9B9B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ideageek.Subscribly.Api", "Source\Ideageek.Subscribly.Api\Ideageek.Subscribly.Api.csproj", "{EADBCBF9-C89D-4826-BFD6-1AC2A9C1BE15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ideageek.Subscribly.Api", "Source\Ideageek.Subscribly.Api\Ideageek.Subscribly.Api.csproj", "{EADBCBF9-C89D-4826-BFD6-1AC2A9C1BE15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		{280D34BA-5486-4DB6-9EAD-34D374C181D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{280D34BA-5486-4DB6-9EAD-34D374C181D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{280D34BA-5486-4DB6-9EAD-34D374C181D5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88BDFC44-3F54-4D94-ACED-029F929E9B9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88BDFC44-3F54-4D94-ACED-029F929E9B9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88BDFC44-3F54-4D94-ACED-029F929E9B9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88BDFC44-3F54-4D94-ACED-029F929E9B9B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EADBCBF9-C89D-4826-BFD6-1AC2A9C1BE15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EADBCBF9-C89D-4826-BFD6-1AC2A9C1BE15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EADBCBF9-C89D-4826-BFD6-1AC2A9C1BE15}.Release|Any CPU.ActiveCfg = Release|Any CPU

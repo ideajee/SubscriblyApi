@@ -8,7 +8,8 @@ namespace Ideageek.Subscribly.Core.Repositories
     {
         Task<T?> GetById(Guid id);
         Task<IEnumerable<T>> GetAll();
-        Task<IEnumerable<T>> GetByConditionsAsync(object conditions);
+        Task<T?> GetByConditionsAsync(object conditions);
+        Task<IEnumerable<T>> GetAllByConditionsAsync(object conditions);
         Task<int> Add(T entity);
         Task<int> Update(T entity);
         Task<int> Delete(Guid id);
@@ -46,7 +47,27 @@ namespace Ideageek.Subscribly.Core.Repositories
             }
         }
 
-        public async Task<IEnumerable<T>> GetByConditionsAsync(object conditions)
+        public async Task<T?> GetByConditionsAsync(object conditions)
+        {
+            using (var db = Connection)
+            {
+                var query = $"SELECT * FROM {typeof(T).Name} WHERE 1=1";
+                var parameters = new DynamicParameters();
+
+                foreach (var property in conditions.GetType().GetProperties())
+                {
+                    var value = property.GetValue(conditions);
+                    if (value != null)
+                    {
+                        query += $" AND {property.Name} = @{property.Name}";
+                        parameters.Add($"@{property.Name}", value);
+                    }
+                }
+                return (await db.QueryAsync<T>(query, parameters)).FirstOrDefault();
+            }
+        }
+
+        public async Task<IEnumerable<T>> GetAllByConditionsAsync(object conditions)
         {
             using (var db = Connection)
             {

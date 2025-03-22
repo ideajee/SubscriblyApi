@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace Ideageek.Subscribly.Services.Helpers
+namespace Ideageek.Subscribly.Core.Helpers
 {
     public interface IAuthHelper
     {

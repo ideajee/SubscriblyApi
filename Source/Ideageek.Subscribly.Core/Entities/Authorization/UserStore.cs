@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.Common;
 
-namespace Ideageek.Subscribly.Services.Authorization
+namespace Ideageek.MunshiJee.Services.Authorization
 {
     public class UserStore : IUserStore<AspNetUser>, IUserPasswordStore<AspNetUser>, IUserRoleStore<AspNetUser>
     {

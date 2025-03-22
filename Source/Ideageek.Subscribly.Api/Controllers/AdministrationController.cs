@@ -1,6 +1,6 @@
-﻿using Ideageek.Subscribly.Services.Administration;
-using Ideageek.Subscribly.Services.Dtos.UserManagement;
-using Ideageek.Subscribly.Services.Helpers;
+﻿using Ideageek.Subscribly.Core.Entities.Administration;
+using Ideageek.Subscribly.Core.Helpers;
+using Ideageek.Subscribly.Core.Services.Administration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,52 +10,50 @@ namespace Ideageek.Subscribly.Api.Controllers
     [ApiController]
     public class AdministrationController : ControllerBase
     {
-        private readonly IFriendService _friendService;
-        private readonly IConfiguration _configuration;
+        private readonly ISubscriptionService _SubscriptionService;
         private readonly IAuthHelper _authHelper;
-        public AdministrationController(IFriendService friendService, IConfiguration configuration, IAuthHelper authHelper)
+        public AdministrationController(ISubscriptionService SubscriptionService, IConfiguration configuration, IAuthHelper authHelper)
         {
-            _friendService = friendService;
-            _configuration = configuration;
+            _SubscriptionService = SubscriptionService;
             _authHelper = authHelper;
         }
 
-        #region Friend
-        [Authorize(Roles = "User")]
-        [HttpGet("GetFriendById")]
-        public IActionResult GetFriendById(Guid id)
+        #region Subscription
+        [Authorize(Roles = "Admin")]
+        [HttpGet("GetSubscriptionById")]
+        public IActionResult GetSubscriptionById(Guid id)
         {
-            return Ok(_friendService.GetById(id));
+            return Ok(_SubscriptionService.GetById(id));
         }
 
         [Authorize(Roles = "Admin")]
         [HttpGet("GetAll")]
         public IActionResult GetAll()
         {
-            return Ok(_friendService.GetAll());
+            return Ok(_SubscriptionService.GetAll());
         }
 
-        [Authorize(Roles = "User")]
-        [HttpPost("GetAllFriends")]
-        public IActionResult GetAllFriends()
+        [Authorize(Roles = "Admin")]
+        [HttpPost("GetAllSubscriptions")]
+        public IActionResult GetAllSubscriptions()
         {
             var userId = _authHelper.GetUserId();
             if (userId == null)
                 return Unauthorized("Invalid User Id. Please validate token!");
 
-            return Ok(_friendService.GetAllFriendsById(userId.Value));
+            return Ok(_SubscriptionService.GetAllSubscriptionsById(userId.Value));
         }
 
-        [Authorize(Roles = "User")]
-        [HttpPost("AddFriend")]
-        public async Task<IActionResult> AddFriend(AddFriendDto request)
+        [Authorize(Roles = "Admin")]
+        [HttpPost("AddSubscription")]
+        public async Task<IActionResult> AddSubscription(AddSubscription request)
         {
             var userId = _authHelper.GetUserId();
             if (userId == null)
                 return Unauthorized("Invalid User Id. Please validate token!");
             try
             {
-                return Ok(await _friendService.Add(request, userId.Value));
+                return Ok(await _SubscriptionService.Add(request, userId.Value));
             }
             catch (Exception ex)
             {
@@ -63,11 +61,11 @@ namespace Ideageek.Subscribly.Api.Controllers
             }
         }
 
-        [Authorize(Roles = "User")]
-        [HttpPost("UpdateFriend")]
-        public IActionResult UpdateFriend(UpdateFriendDto request)
+        [Authorize(Roles = "Admin")]
+        [HttpPost("UpdateSubscription")]
+        public IActionResult UpdateSubscription(UpdateSubscription request)
         {
-            return Ok(_friendService.Update(request));
+            return Ok(_SubscriptionService.Update(request));
         }
         #endregion
     }

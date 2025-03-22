@@ -3,7 +3,7 @@ using Ideageek.Subscribly.Core.Entities.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Data;
 
-namespace Ideageek.Subscribly.Services.Authorization
+namespace Ideageek.MunshiJee.Services.Authorization
 {
     public class RoleStore : IRoleStore<AspNetRole>
     {

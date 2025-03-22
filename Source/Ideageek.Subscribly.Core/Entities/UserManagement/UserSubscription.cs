@@ -2,14 +2,14 @@
 
 namespace Ideageek.Subscribly.Core.Entities.UserManagement
 {
-    public class Friend : BaseEntity
+    public class UserSubscription : BaseEntity
     {
         [Required]
-        [StringLength(100)]
-        public string FriendName { get; set; }
+        public Guid AdminUserId { get; set; }
         [Required]
-        [StringLength(50)]
-        public string PhoneNumber { get; set; }
+        public Guid SubscriptionId { get; set; }
+        [Required]
+        public string ProfileNameOrEmail { get; set; }
         [Required]
         public int Amount { get; set; }
     }

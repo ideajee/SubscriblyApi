@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Ideageek.Subscribly.Core.Entities
 {
@@ -19,5 +14,23 @@ namespace Ideageek.Subscribly.Core.Entities
         Home = 1,
         [Description("Trip")]
         Trip
+    }
+    public enum SubscriptionStatus
+    {
+        [Description("Active")]
+        Active = 1,
+        [Description("Inactive")]
+        Inactive = 2,
+        [Description("Unpaid")]
+        Unpaid = 3,
+    }
+    public enum NotificationStatus
+    {
+        [Description("Pending")]
+        Pending = 0,
+        [Description("Delivered")]
+        Delivered = 1,
+        [Description("Failed")]
+        Failed = 2,
     }
 }

@@ -1,12 +1,9 @@
+using Ideageek.MunshiJee.Services.Authorization;
 using Ideageek.Subscribly.Core.Entities.Authorization;
+using Ideageek.Subscribly.Core.Helpers;
 using Ideageek.Subscribly.Core.Repositories;
-using Ideageek.Subscribly.Services.Administration;
-using Ideageek.Subscribly.Services.Authorization;
-using Ideageek.Subscribly.Services.Helpers;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.Text;
@@ -34,9 +31,9 @@ builder.Services.AddScoped<IUserStore<AspNetUser>, UserStore>();
 builder.Services.AddScoped<IRoleStore<AspNetRole>, RoleStore>();
 builder.Services.AddScoped<IPasswordHasher<AspNetUser>, PasswordHasher<AspNetUser>>();
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-builder.Services.AddScoped<IClientService, ClientService>();
-builder.Services.AddScoped<IFriendService, FriendService>();
+//builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IAuthHelper, AuthHelper>();
+builder.Services.AddScoped<IAppHelper, AppHelper>();
 
 
 

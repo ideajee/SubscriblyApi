@@ -1,4 +1,4 @@
-﻿namespace Ideageek.Subscribly.Services.Dtos.Authorization
+﻿namespace Ideageek.Subscribly.Core.Dtos
 {
     public class LoginDto
     {

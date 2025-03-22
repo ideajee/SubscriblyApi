@@ -1,4 +1,4 @@
-﻿using Ideageek.Subscribly.Services.Dtos.Authorization;
+﻿using Ideageek.Subscribly.Core.Dtos;
 using Ideageek.Subscribly.Core.Entities.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -41,9 +41,7 @@ namespace Ideageek.Subscribly.Api.Controllers
             {
                 UserName = model.UserName,
                 NormalizedUserName = model.UserName.ToUpper(),
-                Email = model.Email,
-                NormalizedEmail = model.Email.ToUpper(),
-                EmailConfirmed = true
+                Email = model.Email
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, model.Password);
@@ -51,26 +49,45 @@ namespace Ideageek.Subscribly.Api.Controllers
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
-            if(model.UserName == "admin")
+            if (!await _roleManager.RoleExistsAsync("Admin"))
+                await _roleManager.CreateAsync(new AspNetRole { Name = "Admin" });
+
+            var roleAssignResult = await _userManager.AddToRoleAsync(user, "Admin");
+            if (!roleAssignResult.Succeeded)
+                return BadRequest("Failed to assign 'User' role.");
+
+            //if (!await _roleManager.RoleExistsAsync("User"))
+            //    await _roleManager.CreateAsync(new AspNetRole { Name = "User" });
+
+            //var roleAssignResult = await _userManager.AddToRoleAsync(user, "User");
+            //if (!roleAssignResult.Succeeded)
+            //    return BadRequest("Failed to assign 'User' role.");
+            return Ok(new { Message = "Registered completed successfully" });
+        }
+
+        [HttpPost("adduser")]
+        public async Task<IActionResult> AddUser([FromBody] UserDto model)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var user = new AspNetUser
             {
-                if (!await _roleManager.RoleExistsAsync("Admin"))
-                    await _roleManager.CreateAsync(new AspNetRole { Name = "Admin" });
+                UserName = model.UserName,
+                NormalizedUserName = model.UserName.ToUpper()
+            };
 
-                var roleAssignResult = await _userManager.AddToRoleAsync(user, "Admin");
-                if (!roleAssignResult.Succeeded)
-                    return BadRequest("Failed to assign 'User' role.");
-            }
-            else
-            {
-                if (!await _roleManager.RoleExistsAsync("User"))
-                    await _roleManager.CreateAsync(new AspNetRole { Name = "User" });
+            user.PasswordHash = _passwordHasher.HashPassword(user, model.Password);
+            var result = await _userManager.CreateAsync(user);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
 
-                var roleAssignResult = await _userManager.AddToRoleAsync(user, "User");
-                if (!roleAssignResult.Succeeded)
-                    return BadRequest("Failed to assign 'User' role.");
-            }
+            if (!await _roleManager.RoleExistsAsync("User"))
+                await _roleManager.CreateAsync(new AspNetRole { Name = "User" });
 
-            return Ok(new { Message = "User registered successfully" });
+            var roleAssignResult = await _userManager.AddToRoleAsync(user, "User");
+            if (!roleAssignResult.Succeeded)
+                return BadRequest("Failed to assign 'User' role.");
+            return Ok(new { Message = "Registered completed successfully" });
         }
 
         /// <summary>
@@ -101,6 +118,7 @@ namespace Ideageek.Subscribly.Api.Controllers
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim(JwtRegisteredClaimNames.Exp, user.IsAdmin.ToString()),
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
 
