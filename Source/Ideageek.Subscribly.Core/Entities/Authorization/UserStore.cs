@@ -16,7 +16,7 @@ namespace Ideageek.MunshiJee.Services.Authorization
         public UserStore(IConfiguration configuration)
         {
             _configuration = configuration;
-            _connectionString = _configuration.GetConnectionString("MunshiJeeConnection") ?? throw new ArgumentNullException("Connection string not found");
+            _connectionString = _configuration.GetConnectionString("SubscriblyConnection") ?? throw new ArgumentNullException("Connection string not found");
         }
 
         private DbConnection CreateConnection() => new SqlConnection(_connectionString);
@@ -27,8 +27,8 @@ namespace Ideageek.MunshiJee.Services.Authorization
 
             using var db = CreateConnection();
             string sql = @"
-            INSERT INTO AspNetUsers (Id, UserName, NormalizedUserName, Email, NormalizedEmail, EmailConfirmed, PasswordHash, SecurityStamp, ConcurrencyStamp)
-            VALUES (@Id, @UserName, @NormalizedUserName, @Email, @NormalizedEmail, @EmailConfirmed, @PasswordHash, @SecurityStamp, @ConcurrencyStamp)";
+            INSERT INTO AspNetUsers (Id, UserName, NormalizedUserName, Email, NormalizedEmail, EmailConfirmed, PasswordHash)
+            VALUES (@Id, @UserName, @NormalizedUserName, @Email, @NormalizedEmail, @EmailConfirmed, @PasswordHash)";
 
             int rowsAffected = await db.ExecuteAsync(sql, user);
             return rowsAffected > 0 ? IdentityResult.Success : IdentityResult.Failed();
@@ -45,9 +45,7 @@ namespace Ideageek.MunshiJee.Services.Authorization
                     Email = @Email, 
                     NormalizedEmail = @NormalizedEmail, 
                     EmailConfirmed = @EmailConfirmed, 
-                    PasswordHash = @PasswordHash, 
-                    SecurityStamp = @SecurityStamp, 
-                    ConcurrencyStamp = @ConcurrencyStamp
+                    PasswordHash = @PasswordHash
                 WHERE Id = @Id";
 
             int rowsAffected = await db.ExecuteAsync(sql, user);

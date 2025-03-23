@@ -13,5 +13,11 @@
         public int DuePayments { get; set; }
         public int CurrentPayments { get; set; }
         public int TotalPayments { get; set; }
+        //public string SecurityStamp { get; set; }
+        //public string ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
+        //public bool TwoFactorEnabled { get; set; } = false;
+        //public DateTimeOffset? LockoutEnd { get; set; }
+        //public bool LockoutEnabled { get; set; } = true;
+        //public int AccessFailedCount { get; set; } = 0;
     }
 }

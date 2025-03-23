@@ -29,13 +29,84 @@ namespace Ideageek.Subscribly.Api.Controllers
             _passwordHasher = passwordHasher;
         }
 
-        /// <summary>
-        /// Register a new user.
-        /// </summary>
+        [HttpPost("seed")]
+        public async Task<IActionResult> Seed()
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            if (!await _roleManager.RoleExistsAsync("SuperAdmin"))
+                await _roleManager.CreateAsync(new AspNetRole { Name = "SuperAdmin" });
+            if (!await _roleManager.RoleExistsAsync("Admin"))
+                await _roleManager.CreateAsync(new AspNetRole { Name = "Admin" });
+            if (!await _roleManager.RoleExistsAsync("User"))
+                await _roleManager.CreateAsync(new AspNetRole { Name = "User" });
+
+            var user = new AspNetUser
+            {
+                Id = Guid.NewGuid(),
+                UserName = "SuperAdmin",
+                NormalizedUserName = "SUPERADMIN",
+                Email = "SuperAdmin@Ideageek.pk",
+                NormalizedEmail = "SUPERADMIN@IDEAGEEK.PK",
+                EmailConfirmed = true,
+                IsAdmin = false,
+                DuePayments = 0,
+                CurrentPayments = 0,
+                TotalPayments = 0,
+            };
+            user.PasswordHash = _passwordHasher.HashPassword(user, "Ideageek123");
+            await _userManager.CreateAsync(user);
+            await _userManager.AddToRoleAsync(user, "SuperAdmin");
+            
+
+            var user2 = new AspNetUser
+            {
+                Id = Guid.NewGuid(),
+                UserName = "03343487595",
+                NormalizedUserName = "03343487595",
+                Email = "Admin@Ideageek.pk",
+                NormalizedEmail = "ADMIN@IDEAGEEK.PK",
+                EmailConfirmed = true,
+                IsAdmin = true,
+                DuePayments = 0,
+                CurrentPayments = 0,
+                TotalPayments = 0,
+            };
+            user2.PasswordHash = _passwordHasher.HashPassword(user2, "Ideageek123");
+            await _userManager.CreateAsync(user2);
+            await _userManager.AddToRoleAsync(user2, "Admin");
+
+            var user3 = new AspNetUser
+            {
+                Id = Guid.NewGuid(),
+                UserName = "123456789",
+                NormalizedUserName = "123456789",
+                Email = "User@Ideageek.pk",
+                NormalizedEmail = "USER@IDEAGEEK.PK",
+                EmailConfirmed = true,
+                IsAdmin = false,
+                DuePayments = 0,
+                CurrentPayments = 0,
+                TotalPayments = 0,
+            };
+            user3.PasswordHash = _passwordHasher.HashPassword(user3, "Ideageek123");
+            await _userManager.CreateAsync(user3);
+            await _userManager.AddToRoleAsync(user3, "User");
+
+            return Ok(new { Message = "Registered completed successfully" });
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserDto model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            if (!await _roleManager.RoleExistsAsync("SuperAdmin"))
+                await _roleManager.CreateAsync(new AspNetRole { Name = "SuperAdmin" });
+            if (!await _roleManager.RoleExistsAsync("Admin"))
+                await _roleManager.CreateAsync(new AspNetRole { Name = "Admin" });
+            if (!await _roleManager.RoleExistsAsync("User"))
+                await _roleManager.CreateAsync(new AspNetRole { Name = "User" });
 
             var user = new AspNetUser
             {
@@ -49,8 +120,6 @@ namespace Ideageek.Subscribly.Api.Controllers
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
-            if (!await _roleManager.RoleExistsAsync("Admin"))
-                await _roleManager.CreateAsync(new AspNetRole { Name = "Admin" });
 
             var roleAssignResult = await _userManager.AddToRoleAsync(user, "Admin");
             if (!roleAssignResult.Succeeded)

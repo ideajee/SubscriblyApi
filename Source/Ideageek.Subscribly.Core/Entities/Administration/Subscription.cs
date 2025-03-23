@@ -11,7 +11,7 @@ namespace Ideageek.Subscribly.Core.Entities.Administration
         [StringLength(255)]
         public string Icon { get; set; }
         [Required]
-        public bool Status { get; set; }
+        public SubscriptionStatus Status { get; set; }
     }
     public class AddSubscription
     {
@@ -21,8 +21,6 @@ namespace Ideageek.Subscribly.Core.Entities.Administration
         [Required]
         [StringLength(255)]
         public string Icon { get; set; }
-        [Required]
-        public bool Status { get; set; }
     }
     public class UpdateSubscription
     {

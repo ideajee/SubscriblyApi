@@ -21,27 +21,27 @@ namespace Ideageek.Subscribly.Api.Controllers
         #region Subscription
         [Authorize(Roles = "Admin")]
         [HttpGet("GetSubscriptionById")]
-        public IActionResult GetSubscriptionById(Guid id)
+        public async Task<IActionResult> GetSubscriptionById(Guid id)
         {
-            return Ok(_SubscriptionService.GetById(id));
+            return Ok(await _SubscriptionService.GetById(id));
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin")]
         [HttpGet("GetAll")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_SubscriptionService.GetAll());
+            return Ok(await _SubscriptionService.GetAll());
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost("GetAllSubscriptions")]
-        public IActionResult GetAllSubscriptions()
+        public async Task<IActionResult> GetAllSubscriptions()
         {
             var userId = _authHelper.GetUserId();
             if (userId == null)
                 return Unauthorized("Invalid User Id. Please validate token!");
 
-            return Ok(_SubscriptionService.GetAllSubscriptionsById(userId.Value));
+            return Ok(await _SubscriptionService.GetAllSubscriptionsById(userId.Value));
         }
 
         [Authorize(Roles = "Admin")]
@@ -63,9 +63,9 @@ namespace Ideageek.Subscribly.Api.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost("UpdateSubscription")]
-        public IActionResult UpdateSubscription(UpdateSubscription request)
+        public async Task<IActionResult> UpdateSubscription(UpdateSubscription request)
         {
-            return Ok(_SubscriptionService.Update(request));
+            return Ok(await _SubscriptionService.Update(request));
         }
         #endregion
     }
