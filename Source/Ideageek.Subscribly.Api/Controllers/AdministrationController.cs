@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ideageek.Subscribly.Api.Controllers
 {
+    [Authorize]
     [Route("api/administration")]
     [ApiController]
     public class AdministrationController : ControllerBase
@@ -19,21 +20,19 @@ namespace Ideageek.Subscribly.Api.Controllers
         }
 
         #region Subscription
-        [Authorize(Roles = "Admin")]
         [HttpGet("GetSubscriptionById")]
         public async Task<IActionResult> GetSubscriptionById(Guid id)
         {
             return Ok(await _SubscriptionService.GetById(id));
         }
 
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _SubscriptionService.GetAll());
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpPost("GetAllSubscriptions")]
         public async Task<IActionResult> GetAllSubscriptions()
         {
@@ -44,7 +43,6 @@ namespace Ideageek.Subscribly.Api.Controllers
             return Ok(await _SubscriptionService.GetAllSubscriptionsById(userId.Value));
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpPost("AddSubscription")]
         public async Task<IActionResult> AddSubscription(AddSubscription request)
         {

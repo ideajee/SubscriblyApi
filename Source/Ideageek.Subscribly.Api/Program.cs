@@ -68,24 +68,32 @@ builder.Services.AddAuthentication(options =>
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = false,
-        ValidateAudience = false,
+        //ValidateIssuerSigningKey = true,
+        //IssuerSigningKey = new SymmetricSecurityKey(key),
+        //ValidateIssuer = false,
+        //ValidateAudience = false,
         //ValidIssuer = jwtSettings["Issuer"],
         //ValidAudience = jwtSettings["Audience"],
+        //ValidateLifetime = true,
+        //RoleClaimType = ClaimTypes.Role,
+        //ClockSkew = TimeSpan.Zero
+
+        ValidateIssuer = true,
+        ValidateAudience = true,
         ValidateLifetime = true,
-        RoleClaimType = ClaimTypes.Role,
-        ClockSkew = TimeSpan.Zero
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Secret"]))
     };
 });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("SuperAdminPolicy", policy => policy.RequireRole("SuperAdmin"));
-    options.AddPolicy("UserPolicy", policy => policy.RequireRole("User"));
-});
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+//    options.AddPolicy("SuperAdminPolicy", policy => policy.RequireRole("SuperAdmin"));
+//    options.AddPolicy("UserPolicy", policy => policy.RequireRole("User"));
+//});
 
 // Add services to the container.
 builder.Services.AddAuthentication();
@@ -114,7 +122,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();
